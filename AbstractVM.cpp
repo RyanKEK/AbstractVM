@@ -1,17 +1,12 @@
 #include "AbstractVM.hpp"
 #include <algorithm>
 #include <fstream>
+#include <regex>
+#include <map>
 
 AbstractVM::AbstractVM() : _fac(Factory())
 {
-	this->_commands = {
-		"push", "pop",
-		"dump", "assert",
-		"add", "sub",
-		"mul", "div",
-		"mod", "print",
-		"exit"
-	};
+
 }
 
 AbstractVM::~AbstractVM()
@@ -126,14 +121,31 @@ void AbstractVM::start(std::string const filename)
 {
 	std::ifstream ifs;
 	std::string line;
+	std::map<std::string, int> mapOfMarks = { { "Riti", 2 }, { "Jack", 4 } };
+	std::map<std::string, void (AbstractVM::*)()> fPtrs = {
+		{"pop", AbstractVM::pop},
+		{"dump", AbstractVM::dump},
+		{"add", AbstractVM::add},
+		{"sub", AbstractVM::sub},
+		{"mul", AbstractVM::mul},
+		{"div", AbstractVM::div},
+		{"mod", AbstractVM::mod},
+		{"print", AbstractVM::print},
+		{"exit", AbstractVM::exit}
+	};
+	std::regex pushAssertRegex("(push|assert) (Int(8|16|32)|Float|Double)\\(-?[0-9]+\\.?[0-9]+\\)\n");
+	std::regex otherRegex("(pop|dump|add|sub|mul|div|mod|print|exit)(;.*)?\n");
 
-	ifs.open(filename);
+	ifs.open(filename);	
 
 	while (std::getline(ifs, line))
 	{
-		if (std::find(this->_commands.begin(), this->_commands.end(), line.substr(0, line.find_first_of(" \n"))) == this->_commands.end())
+		if (line == "\n")
+			continue ;
+		if (line == ";;\n")
+		if (std::regex_match(line, otherRegex))
 		{
-			
+			_commands.push_back(fPtrs[line.substr(0, line.find('\n'))]);
 		}
 
 

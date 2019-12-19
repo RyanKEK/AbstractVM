@@ -36,12 +36,11 @@ IOperand const * Factory::createDouble(std::string const & value) const
 
 IOperand const * Factory::createOperand(eOperandType type, std::string const & value) const
 {
-    std::vector<IOperand const *(Factory::*)(std::string const &) const> vec = {
-        &Factory::createInt8,
-        &Factory::createInt16,
-        &Factory::createInt32,
-        &Factory::createFloat,
-        &Factory::createDouble
-    };
+    std::vector<IOperand const *(Factory::*)(std::string const &) const> vec;
+    vec.push_back(&Factory::createInt8);
+    vec.push_back(&Factory::createInt16);
+    vec.push_back(&Factory::createInt32);
+    vec.push_back(&Factory::createFloat);
+    vec.push_back(&Factory::createDouble);
     return ((this->*vec[type])(value));
 }

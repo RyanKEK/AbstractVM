@@ -42,6 +42,7 @@ public:
             return (eOperandType(Double));
             break;
         default:
+            return (eOperandType(Int8));
             break;
         }
     };

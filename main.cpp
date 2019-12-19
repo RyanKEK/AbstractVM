@@ -3,6 +3,7 @@
 #include "Number.hpp"
 #include "Factory.hpp"
 #include <regex>
+#include <iomanip>
 
 int main()
 {
@@ -30,9 +31,14 @@ int main()
 	// 	std::cerr << e.what() << '\n';
 	// }
 	// avm.dump();
-	std::string str("word1 asd");
-	std::string st2("word2 asd123");
-	std::regex rx("word1+.");
-	std::cout << std::regex_match(str, rx) << std::endl;
-
+	// std::string str("push Int8(32)");
+	// std::string str2("assert Double(25.4)");
+	// std::string space = "asd ";
+	std::regex rx("push (Int(8|16|32)|Float|Double)\\((-|+)?[0-9]+\\.?[0-9]*\\)(;.*)?\n");
+	std::cout << std::regex_match("push Float(1.9512312)\n", rx) << std::endl;
+	double d = 0.0012 + 1.0;
+	double d1 = 1.123123123123123123123123123123123123;
+	std::cout.precision(1);
+	std::cout << std::fixed << d << std::endl << d1 << std::endl << "1.123123123123123123123123123123123123" << std::endl;
+	//std::cout << std::regex_match(str2, rx) << std::endl;
 }

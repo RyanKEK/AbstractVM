@@ -9,9 +9,9 @@ class AbstractVM
 {
 private:
 
-	std::stack<IOperand const *>	_stack;
-	Factory							_fac;
-	std::vector<std::string>		_commands;
+	std::stack<IOperand const *>		_stack;
+	Factory								_fac;
+	std::vector<void (AbstractVM::*)()>	_commands;
 
 public:
 
