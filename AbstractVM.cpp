@@ -121,7 +121,7 @@ void AbstractVM::start(std::string const filename)
 {
 	std::ifstream ifs;
 	std::string line;
-	std::map<std::string, int> mapOfMarks = { { "Riti", 2 }, { "Jack", 4 } };
+	unsigned int lineCount = 1;
 	std::map<std::string, void (AbstractVM::*)()> fPtrs = {
 		{"pop", AbstractVM::pop},
 		{"dump", AbstractVM::dump},
@@ -143,13 +143,19 @@ void AbstractVM::start(std::string const filename)
 		if (line == "\n")
 			continue ;
 		if (line == ";;\n")
+			break ;
 		if (std::regex_match(line, otherRegex))
 		{
 			_commands.push_back(fPtrs[line.substr(0, line.find('\n'))]);
 		}
+		else if (std::regex_match(line, pushAssertRegex))
+		{
+			if (line.substr(0, line.find(' ')) == "push")
+				_commands.push_back(AbstractVM::push);
+		}
 
 
-
+		lineCount++;
 	}
 
 }

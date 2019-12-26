@@ -11,7 +11,8 @@ private:
 
 	std::stack<IOperand const *>		_stack;
 	Factory								_fac;
-	std::vector<void (AbstractVM::*)()>	_commands;
+	std::deque<void (AbstractVM::*)()>	_commands;
+	//std::vector<std::string>			_operands;
 
 public:
 
